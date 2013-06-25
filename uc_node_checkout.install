@@ -1,13 +1,7 @@
 <?php
 
 /**
- * @file
- * Install, update, and uninstall functions for the uc_node_checkout module.
- */
-
-
-/**
- * Implements hook_install().
+ * Implementation of hook_install().
  */
 function uc_node_checkout_install() {
   // Create tables.
@@ -16,19 +10,16 @@ function uc_node_checkout_install() {
 
 
 /**
- * Implements hook_uninstall().
+ * Implementation of hook_uninstall().
  */
 function uc_node_checkout_uninstall() {
   // Remove tables.
   drupal_uninstall_schema('uc_node_checkout');
-
-  // Remove all module variables from the database
-  db_query("DELETE FROM {variable} WHERE name LIKE 'uc_node_checkout_%%'");
 }
 
 
 /**
- * Implements hook_schema().
+ * Implementation of hook_schema().
  */
 function uc_node_checkout_schema() {
   $schema['uc_node_checkout_types'] = array(
@@ -84,7 +75,7 @@ function uc_node_checkout_schema() {
 
 
 /**
- * Implements hook_update_N().
+ * Implementation of hook_update_N().
  */
 function uc_node_checkout_update_6200() {
   $ret = array();

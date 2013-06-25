@@ -5,7 +5,6 @@
  * Defines administration pages for the node checkout module.
  */
 
-
 /**
  * Displays the node checkout settings table/form.
  */
@@ -19,7 +18,7 @@ function uc_node_checkout_admin() {
   // Loop through all the node types on the site.
   foreach ($types as $type => $info) {
     // Look for a product node association.
-    if (isset($nc_map[$type])) {
+    if ($nc_map[$type]['nid']) {
       $product = node_load($nc_map[$type]['nid']);
     }
     else {
@@ -33,7 +32,7 @@ function uc_node_checkout_admin() {
     $rows[] = array(
       $info->name,
       $product ? l($product->model, 'node/'. $product->nid) : t('n/a'),
-      isset($nc_map[$type]['view']) ? check_plain($nc_map[$type]['view']) : t('n/a'),
+      $nc_map[$type]['view'] ? check_plain($nc_map[$type]['view']) : t('n/a'),
       l(t('edit'), 'admin/store/settings/node-checkout/'. $type),
     );
   }
@@ -65,7 +64,7 @@ function uc_node_checkout_type_form(&$form_state, $type) {
     '#type' => 'textfield',
     '#title' => t('Product NID'),
     '#description' => t("When a %type node is created, one of the chosen product is added to the user's cart.<br />Start typing a SKU or title in this field to view autocomplete options.<br />Empty this field to disable node checkout for this node type.", array('%type' => $type->name)),
-    '#default_value' => isset($nc_map[$type->type]) ? $nc_map[$type->type]['nid'] : '',
+    '#default_value' => $nc_map[$type->type]['nid'],
     '#autocomplete_path' => 'uc_node_checkout/autocomplete',
   );
 
@@ -94,7 +93,7 @@ function uc_node_checkout_type_form(&$form_state, $type) {
       '#title' => t('View'),
       '#description' => t('Optional. When a user creates a %type node, allow them to choose the associated product from this View.<br />If a View is specified, the Product NID setting will be ignored.', array('%type' => $type->name)),
       '#options' => array_merge(array('' => ' '), $views),
-      '#default_value' => isset($nc_map[$type->type]) ? $nc_map[$type->type]['view'] : '',
+      '#default_value' => $nc_map[$type->type]['view'],
     );
   }
 
@@ -163,7 +162,7 @@ function uc_node_checkout_type_form(&$form_state, $type) {
 
 
 /**
- * Submit handler for uc_node_checkout_type_form().
+ *
  */
 function uc_node_checkout_type_form_submit($form, &$form_state) {
   // Save the product node ID.

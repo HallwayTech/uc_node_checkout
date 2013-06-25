@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 /**
  * Views integration for uc_node_checkout module.
@@ -7,9 +8,8 @@
  * line number.
  */
 
-
 /**
- * Implements hook_views_data().
+ * Implementation of hook_views_data().
  */
 function uc_node_checkout_views_data() {
 
