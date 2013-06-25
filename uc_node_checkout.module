@@ -456,7 +456,8 @@ function uc_node_checkout_form_alter(&$form, &$form_state, $form_id) {
       }
 
       // Redirect non-administrators to the shopping cart after edits.
-      if (variable_get('uc_node_checkout_submit_redirect', TRUE)) {
+      if (variable_get('uc_node_checkout_submit_redirect', TRUE) &&
+            !user_access('edit any ' . $type . ' content')) {
         $form['#redirect'] = variable_get('uc_add_item_redirect', 'cart');
         // If redirect is <none>, we need to come back to the current page after submit.
         if ($form['#redirect'] === '<none>') {
